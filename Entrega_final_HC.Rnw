@@ -1,0 +1,270 @@
+\documentclass{article}
+
+
+%%%%
+% PLOTS mapas y conglomerados
+% bibliografia
+%%%%
+\usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage{authblk}
+\usepackage{adjustbox}
+
+\usepackage{natbib}
+
+
+\title{INDICES DE DESARROLLO HUMANO (IDH) EN COLOMBIA}
+% autores
+\renewcommand\Authand{, y }
+\author[1]{\normalsize Oscar Ivan Jimenez Villadiego}
+%\affil[1,2]{\small  Escuela de Verano,Universidad de los Andes\\
+%\texttt{{oi.jimenez}@uniandes.edu.col}}
+%\affil[1]{\small Herramientas Computacionales para la
+ %Investigación Interdisciplinar Reproducible\\
+
+
+\date{30 de Junio del 2018}
+
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\maketitle
+
+\begin{abstract}
+El �?ndice de desarrollo humano (IDH) resulta ser un indicador tri-dimensional que permite medir una zona geográfica ante la calidad de vida para sus habitantes. Se realiza un análisis interdeparmental sobre el indicador, que permita identificar variables y relaciones entre las diferentes regiones del pa�?s.
+\end{abstract}
+
+\section{Exploración Univariada}\label{univariada}
+
+En esta sección se tomará los datos de la población, IDH y la población de cabecera con el fin de realizar un análisis exploratorio.
+
+<<getData, echo=FALSE>>=
+# Cargar archivo ----
+
+# setwd("")
+filename="colombia.csv"
+colb=read.csv(filename, stringsAsFactors = FALSE)
+
+# que variables y tipo
+#str(colb)
+
+# Exploracion Univariada --------------------------------------------------
+
+## estadisticos
+
+# nos interesa IDH, y poblacion cabecera y poblacion resto
+# no se puede secar tabla de frecuencia, 
+# solo estadisticos:
+#summary(colb)
+
+
+@
+
+A continuación se presenta los valores centrales y la mediana de cada uno de los �?tems evaluados por departamento.
+
+<<summary, results=tex, echo=FALSE>>=
+library(stargazer)
+
+stargazer(colb,title = "Medidas estad�?sticas", label = "stats",summary.stat = c("min", "max", "median", "mean", "sd"))
+@
+
+
+En primera instancia, se presenta la tabla con la información vital de los datos relacionados al IDH departamental en Colombia. Cabe resaltar que a mayor IDH, mejor puntaje obtiene.
+
+
+
+
+Para visualizar de mejor manera lo presentado anteriormente, presentamos los siguientes histogramas
+
+%%%%% figure
+\begin{figure}[h]
+\centering
+<<barplots, echo=FALSE,fig=TRUE>>=
+par(mfrow=c(3,2))
+## graficos
+# el plot de cada uno seria el histograma:
+
+hist(colb$IDH, main = "Histograma IDH", col = "gray", 
+     ylab = "Frecuencia", xlab = "IDH")
+hist(colb$Poblacion.Cabecera,  main = "Histograma Población Cabecera", col = "gray",
+     ylab = "Frecuencia", xLAB = "Población Cabecera")
+hist(colb$Poblacion.Resto, main = "Histograma Población Restante", col = "gray",
+     ylab = "Frecuencia", xlab = "Población Resto")
+
+# dado el sesgo de las pobaciones, 
+# podriamos transformarla para que se acerque a la 
+# normalidad
+
+colb$cabeLog=log(colb$Poblacion.Cabecera)
+colb$restoLog=log(colb$Poblacion.Resto)
+
+hist(colb$cabeLog, main = "Histograma Población Cabecera Log", col = "gray", ylab = "Frecuencia", xlab = "Población Cabecera Log")
+hist(colb$restoLog, main = "Histograma Población Resto Log", col = "gray", ylab = "Frecuencia", xlab = "Población Cabecera Log")
+
+
+@
+\caption{Distribución de Indicadores}
+
+\end{figure}
+
+\clearpage
+
+\section{Exploración Bivariada}
+
+Para la sección se explorará la relación a nivel de correlación entre el IDH y las demás variables, las cuales están ligadas a la población.
+
+<<corrDem, results=tex, echo=FALSE>>=
+
+explanans=names(colb)[c(7:8)] # usando las logs
+corrDem=cor(colb$IDH,colb[,explanans],
+            use = "na.or.complete")
+stargazer(corrDem, title="Correlación IDH y demás variables",label = "corrDem")
+
+@ 
+
+Ahora observemos la correlación entre variables independientes
+  
+<<corrTableX, results=tex, echo=FALSE>>=
+# y la correlaciÃ³n entre las variables independientes:
+    
+corrTableX=round(cor(colb[,explanans],
+                         use = "na.or.complete"),2)
+corrTableX_copy=corrTableX
+corrTableX[upper.tri(corrTableX)]<-""
+#ver:
+stargazer(corrTableX, title="Correlación entre variables independientes",label = 'corrTableX')
+@
+ 
+Lo visto en la Tabla \ref{corrTableX} se refuerza claramente en la Figura \ref{corrPlotX}.
+
+\begin{figure}[h]
+\centering
+\begin{adjustbox}{width=7cm,height=7cm,clip,trim=1.5cm 0.5cm 0cm 1.5cm}
+
+<<corrPlotX, echo=FALSE,fig=TRUE>>=
+
+
+plot(colb[,explanans])
+
+@
+
+\end{adjustbox}
+\caption{correlación entre predictores}
+\label{corrPlotX}
+\end{figure}
+
+\clearpage
+
+\section{Modelos de Regresión}
+
+Finalmente, vemos los modelos propuestos. Primero sin la población resto como independiente, y luego con está. Los resultados se muestran en la Tabla \ref{regresiones} de la página \pageref{regresiones}.
+
+<<regresiones, echo=FALSE>>=
+
+LinRegA = lm(IDH ~ ., data = colb[,c(1,7)])
+LinRegB = lm(IDH ~ ., data = colb[,c(1,7:8)])
+
+@
+
+<<regresionesPlot,results=tex, echo=false>>=
+
+stargazer(LinRegA,LinRegB,
+          title = "Modelos de Regresión", 
+          label = "regresiones")
+
+@
+
+Como se vió en la Tabla \ref{regresiones}, cuando está o no presente el \emph{IDH} las variables no pierden significancia.
+
+\clearpage
+
+\section{Exploración Espacial}
+
+
+
+As�?, propongo que calculemos conglomerados de departamentos usando toda la información de tres de los indicadores. Como nuestras variables son ordinales utilizaremos un proceso de conglomeración donde las distancia serán calculadas usando técnica de k-means de {\bf Mc Queen} propuestas en \cite{macqueen_methods_nodate}. Los tres conglomerados se muestran en la Figura \ref{clustmap}.
+
+
+<<getMap, echo=FALSE,results=hide>>=
+
+library(rgdal)
+folder='COL_maps'
+file='COL_adm1.shp'
+mapaFile=file.path(folder,file)
+mapCol <- rgdal::readOGR(mapaFile,stringsAsFactors=F) 
+
+
+
+@
+
+
+<<echo=FALSE,results=hide>>=
+sub_colb=colb[,c(1:2,7:8)]
+mapCol_idh=merge(mapCol,sub_colb, by.x='NAME_1', by.y='Departamento',all.x=F)
+dimensions=c("NAME_1","IDH","cabeLog","restoLog")
+
+# creo un nuevo data frame con esas:
+dataCluster=mapCol_idh@data[,c(dimensions)]
+
+# como la data es numerica la normalizo (menos la column 1):
+dataCluster[,-1]=scale(dataCluster[,-1])
+
+## APLICANDO TECNICA KMEANS
+
+# calculo 3 clusters
+
+resultado=kmeans(dataCluster[,-1],3)
+
+#creo data frame con los clusters:
+clusters=as.data.frame(resultado$cluster)
+
+# aÃ±ado columna con nombre de regiones
+clusters$NAME_1=dataCluster$NAME_1
+names(clusters)=c('cluster','NAME_1')
+#hago el merge hacia el mapa:
+mapCol_idh=merge(mapCol_idh,clusters, by='NAME_1',all.x=F)
+names(mapCol_idh)
+library(RColorBrewer)
+library(classInt)
+
+varToPLot=mapCol_idh$cluster
+
+unique(varToPLot)
+aggregate(mapCol_idh@data[,c(10,11,12)],
+          by=list(mapCol_idh@data$cluster),FUN=mean)
+
+numberOfClasses = length(unique(varToPLot)) 
+colorForScale='Set2'
+paleta = brewer.pal(numberOfClasses, colorForScale)
+@
+
+
+
+\begin{figure}[h]
+\centering
+%\begin{adjustbox}{width=15cm,height=8cm,clip,trim=1cm 2.5cm 0cm 2.5cm}
+
+<<plotMap1, echo=FALSE, fig=TRUE>>=
+
+
+
+
+plot(mapCol,col='grey',border=0)
+
+plot(mapCol_idh, col = paleta[varToPLot],border=F,add=T)
+legend('left', legend = c("LOW","UP","MEDIUM"),
+       fill = paleta, 
+       cex = 0.6, 
+       bty = "n",
+       title="conglomerado")
+@
+%\end{adjustbox}
+\caption{Departamentos Conglomerados y su IDH}\label{clustmap}
+\end{figure}
+
+\bibliographystyle{abbrv}
+\renewcommand{\refname}{Bibliografia}
+\bibliography{bibliografia}
+
+\end{document}

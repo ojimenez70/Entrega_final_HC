@@ -1,0 +1,246 @@
+\documentclass{article}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage{authblk}
+\usepackage{adjustbox}
+\usepackage{natbib}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,activeacute]{babel}
+
+
+\title{\'INDICES DE DESARROLLO HUMANO DE COLOMBIA}
+
+\author[1]{\normalsize Oscar Iv\'an Jim\'enez Villadiego}
+\affil[1]{\small  Escuela de Ingenier\'ia,Universidad de los Andes,\\
+
+\texttt{{oi.jimenez}@uniandes.edu.co}}
+
+\date{01 de julio de 2018}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\maketitle
+
+\begin{abstract}
+Este trabajo eval\'ua el comportamiento del \'Indice de Desarrollo Humano en Colombia con relaci\'on a la poblaci\'n en las cabeceras y en las zonas rurales del pa\'is. Este trabajo eval\'ua el comportamiento del \'Indice de Desarrollo Humano en Colombia con relaci\'on a la poblaci\'on en las cabeceras y en las zonas rurales del pa\'is. Este trabajo eval\'ua el comportamiento del \'Indice de Desarrollo Humano en Colombia con relaci\'on a la poblaci\'on en las cabeceras y en las zonas rurales del pa\'is.Este trabajo eval\'ua el comportamiento del \'Indice de Desarrollo Humano en Colombia con relaci\'on a la poblaci\'on en las cabeceras y en las zonas rurales del pa\'is.
+\end{abstract}
+
+\section*{Introducci\'on}
+
+El \'Indide de Desarrollo humano (IDH) es un indicador del desarrollo humano de un pa\'is, el cual tiene en cuenta las dimensiones fundamentales del desarrollo humano, entre ellas: una vida larga y saludeable, adquirir conocimientos fundamentales del desarrollo humano y disfrutar de un nivel de vida digno.El \'indice es el resultado de la media aritm\'etica de los \'indices normalizados de cada una de las dimensiones mencionadas. El \'Indide de Desarrollo humano (IDH) es un indicador del desarrollo humano de un pa\'is, el cual tiene en cuenta las dimensiones fundamentales del desarrollo humano, entre ellas: una vida larga y saludeable, adquirir conocimientos fundamentales del desarrollo humano y disfrutar de un nivel de vida digno.El \'Indice es el resultado de la media aritm\'etica de los \'indices normalizados de cada una de las dimensiones mencionadas. El \'Indice de Desarrollo humano (IDH) es un indicador del desarrollo humano de un pa\'is, el cual tiene en cuenta las dimensiones fundamentales del desarrollo humano, entre ellas: una vida larga y saludeable, adquirir conocimientos fundamentales del desarrollo humano y disfrutar de un nivel de vida digno. 
+
+Comencemos viendo que hay en la secci\'on \ref{univariada} en la p\'agina \pageref{univariada}.
+
+\clearpage
+
+\section {Exploraci\'on Univariada}\label{univariada}
+
+En esta secci\'on se explora el \'indice de desarrollo humano, la poblaci\'on en las cabeceras y  resto del pa\'is para cada uno de los departamentos de Colombia. En esta secci\'on se explora el \'indice de desarrollo humano, la poblaci\'on en las cabeceras y  resto del pa\'is para cada uno de los departamentos de Colombia.En esta secci\'on se explora el \'indice de desarrollo humano, la poblaci\'on en las cabeceras y  resto del pa\'is para cada uno de los departamentos de Colombia.En esta secci\'on se explora el \'indice de desarrollo humano, la poblaci\'on en las cabeceras y  resto del pa\'is para cada uno de los departamentos de Colombia.
+
+<<getData, echo=FALSE>>=
+filename="colombia.csv"
+datos_colombia=read.csv(filename, stringsAsFactors = FALSE)
+@
+Ac\'a podemos ver la informaci\'n estad\'istica para Colombia, debido a que es importante saber el valor central. Como los valores son de naturaleza ordinal debemos pedir la {\bf mediana} y otras medidas de posici\'on (como los \emph{cuartiles}, los que no pediremos pues son pocos valores). La mediana de cada variable la mostramos en la Tabla \ref{stats} en la p\'agina \pageref{stats}.
+<<summary, results=tex, echo=FALSE>>=
+library(stargazer)
+vars1 <- datos_colombia[, c(2:5)]
+stargazer(vars1,title = "Medidas estad\'isticas", label="stats", summary.stat = c("n", "median","Min","Max"))
+@
+
+Ac\'a podemos ver la informaci\'on estad\'istica para Colombia, debido a que es importante saber el valor central.Ac\'a podemos ver la informaci\'on estad\'istica para Colombia, debido a que es importante saber el valor central.Ac\'a podemos ver la informaci\'on estad\'istica para Colombia, debido a que es importante saber el valor central.Ac\'a podemos ver la informaci\'on estad\'istica para Colombia, debido a que es importante saber el valor central.Ac\'a podemos ver la informaci\'on estad\'istica para Colombia, debido a que es importante saber el valor central.Ac\'a podemos ver la informaci\'on estad\'istica para Colombia, debido a que es importante saber el valor central.Ac\'a podemos ver la informaci\'on estad\'istica para Colombia, debido a que es importante saber el valor central.
+
+
+Ac\'a podemos observar el histograma del IDH para Colombia \ref{histogramas} en la p\'agina \pageref{histogramas}. 
+
+\begin{figure}[h]
+\centering
+\begin{adjustbox}{width=12cm,height=7cm,clip,trim=0cm 0.0cm 0cm 0cm}
+<<HistogramaIDHPlot,echo=FALSE,fig=TRUE>>=
+par(mfrow=c(2,2))
+title='IDH en Colombia'
+paleta='gray90'
+IDH=datos_colombia$IDH
+hist(IDH,main=title,
+        col=paleta,ylim = c(0,30),
+        ylab = "%")
+###
+title='Pob en las cabeceras del pais'
+paleta='gray90'
+Cabecera=datos_colombia$Poblaci..n.Cabecera
+hist(Cabecera ,main=title,
+        col=paleta,ylim = c(0,30),
+        ylab = "%")
+###
+title='Pob en el resto del pais'
+paleta='gray90'
+Resto=datos_colombia$Poblaci..n.Resto
+hist(Resto,main=title,
+        col=paleta,ylim = c(0,30),
+        ylab = "%")
+###
+title='Pob total del pais'
+paleta='gray90'
+Total=datos_colombia$Poblaci..n.Total
+hist(Total,main=title,
+        col=paleta,ylim = c(0,30),
+        ylab = "%")
+
+
+@
+\end{adjustbox}
+\caption{Histogramas}
+\label{histogramas}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\begin{adjustbox}{width=12cm,height=6cm,clip,trim=0cm 0cm 0cm 0cm}
+<<HistogramaIDHNormPlot,echo=FALSE,fig=TRUE>>=
+par(mfrow=c(1,3))
+datos_colombia$cabeLog=log(datos_colombia$Poblaci..n.Cabecera)
+title='Pob en las cabeceras'
+paleta='gray90'
+Log_Cabecera=datos_colombia$cabeLog
+hist(Log_Cabecera,main=title,
+        col=paleta,ylim = c(0,15),
+        ylab = "%")
+###
+datos_colombia$restoLog=log(datos_colombia$Poblaci..n.Resto)
+title='Pob en el resto'
+paleta='gray90'
+Log_Resto=datos_colombia$restoLog
+hist(Log_Resto,main=title,
+        col=paleta,ylim = c(0,15),
+        ylab = "%")
+###
+datos_colombia$totalLog=log(datos_colombia$Poblaci..n.Total)
+title='Pob total'
+paleta='gray90'
+Log_Total=datos_colombia$totalLog
+hist(Log_Total,main=title,
+        col=paleta,ylim = c(0,15),
+        ylab = "%")
+
+@
+\end{adjustbox}
+\caption{Histogramas Normalizados}
+\label{histogramas_normalizados}
+\end{figure}
+\clearpage
+
+\section{Exploraci\'on Bivariada}
+
+En este trabajo se pretende conocer el impacto que tiene la poblaci\'on en el \'Indice de Desarrollo Humano del pa\'is.
+<<corrIDH, results=tex, echo=FALSE>>=
+explanans=names(datos_colombia)[c(7:8)]
+corrIDH=cor(datos_colombia$IDH,datos_colombia[,explanans],
+    use = "na.or.complete")
+stargazer(corrIDH, title="Correlaci\'on de IDH con las dem\'as variables")
+@
+
+Veamos la correlaci\'on entre las variables independientes.
+<<corrTable, results=tex, echo=FALSE>>=
+corrTable=round(cor(datos_colombia[,explanans],
+                         use = "na.or.complete"),2)
+corrTable_copy=corrTable
+corrTable[upper.tri(corrTable)]<-""
+stargazer(corrTable, title="Correlaci\'on entre variables independientes")
+@
+\label{corrTable}
+@
+Lo visto en la Tabla \ref{corrTable} se refuerza claramente en la Figura \ref{corrPlot}.
+
+\begin{figure}[h]
+\centering
+\begin{adjustbox}{width=7cm,height=7cm,clip,trim=0cm 0cm 0cm 0cm}
+<<corrPlot, echo=FALSE,fig=TRUE>>=
+library(corrplot)
+plot(datos_colombia[,explanans])
+@
+\end{adjustbox}
+\caption{correlaci\'on entre predictores}
+\label{corrPlot}
+\end{figure}
+\clearpage
+
+\section{Modelos de Regresi\'on}
+Finalmente, observamos los modelos propuestos, primero sin la poblaci\'on del resto del pa\'is como independiente. Los resultados se muestran en la Tabla \ref{regresiones} de la p\'agina \pageref{regresiones}.
+
+<<regresiones, echo=FALSE>>=
+LinRegA = lm(IDH ~ ., data = datos_colombia[,c(1,7)])
+LinRegB = lm(IDH ~ ., data = datos_colombia[,c(1,7:8)])
+@
+
+<<regresionesPlot,results=tex, echo=FALSE>>=
+stargazer(LinRegA,LinRegB,
+          title = "Modelos de Regresi\'on",
+          label = "regresiones")
+@
+\clearpage
+
+\section{Exploraci\'on Espacial}
+
+Como acabamos de ver en la Tabla \ref{regresiones} en la p\'agina \pageref{regresiones}, si quisieras sintetizar la multidimensionalidad de nuestros indicadores, podr\'iamos usar tres de las cuatro variables que tenemos (un par de las originales tiene demasiada correlaci\'on). 
+
+As\'i, propongo que calculemos conglomerados de pa\'ises usando toda la informaci\'on de tres de los indicadores. Como nuestras variables son ordinales utilizaremos un proceso de conglomeraci\'on donde las distancia ser\'an calculadas usando la medida {\bf gower} propuestas en \cite{macqueen_methods_nodate}. Los tres conglomerados se muestran en la Figura \ref{clustmap}.
+
+Estos son los lugares donde tenemos informaci\'on:
+
+<<getMap, echo=FALSE,results=hide>>=
+library(rgdal)
+folder='COL_maps'
+file='COL_adm1.shp'
+mapaFile=file.path(folder,file)
+mapCol <- rgdal::readOGR(mapaFile,stringsAsFactors=F) 
+sub_colb=datos_colombia[,c(1:2,7:8)]
+mapCol_idh=merge(mapCol,sub_colb, by.x='NAME_1', by.y='Departamento',all.x=F,)
+@
+
+<<echo=FALSE>>=
+dimensions=c("NAME_1","IDH","cabeLog","restoLog")
+library(cluster)
+dataCluster=mapCol_idh@data[,c(dimensions)]
+dataCluster[,-1]=scale(dataCluster[,-1])
+resultado=kmeans(dataCluster[,-1],3)
+clusters=as.data.frame(resultado$cluster)
+clusters$NAME_1=dataCluster$NAME_1
+names(clusters)=c('cluster','NAME_1')
+mapCol_idh=merge(mapCol_idh,clusters, by='NAME_1',all.x=F)
+
+@
+
+\begin{figure}[h]
+\centering
+\begin{adjustbox}{width=10cm,height=8cm,clip,trim=1cm 1cm 1cm 1cm}
+<<plotMap, echo=FALSE, fig=TRUE>>=
+library(RColorBrewer)
+library(classInt)
+varToPLot=mapCol_idh$cluster
+numberOfClasses = length(unique(varToPLot)) 
+colorForScale='Set2'
+paleta = brewer.pal(numberOfClasses, colorForScale)
+plot(mapCol,col='grey',border=0)
+plot(mapCol_idh, col = paleta[varToPLot],border=F,add=T)
+legend('left', legend = c("LOW","UP","MEDIUM"),
+       fill = paleta, 
+       cex = 0.6, 
+       bty = "n",
+       title="conglomerado")
+
+@
+\end{adjustbox}
+\caption{Departamentos seg\'un sus indicadores de desarrollo humano}\label{clustmap}
+\end{figure}
+\clearpage
+\bibliographystyle{abbrv}
+\renewcommand{\refname}{Bibliograf\'ia}
+\bibliography{IDH}
+
+\end{document}

@@ -1,0 +1,16 @@
+\documentclass{article}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+<<fig=TRUE>>=
+
+# NO OLVIDAR set working directory
+filename="colombia.csv"
+colb=read.csv(filename, stringsAsFactors = FALSE)
+hist(colb$Población.Resto)
+@
+
+
+
+\end{document}

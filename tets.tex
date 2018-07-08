@@ -1,0 +1,19 @@
+\documentclass{article}
+
+\usepackage{Sweave}
+\begin{document}
+\input{tets-concordance}
+
+\begin{Schunk}
+\begin{Sinput}
+> # NO OLVIDAR set working directory
+> filename="colombia.csv"
+> colb=read.csv(filename, stringsAsFactors = FALSE)
+> hist(colb$Población.Resto)
+\end{Sinput}
+\end{Schunk}
+\includegraphics{tets-001}
+
+
+
+\end{document}

@@ -1,0 +1,10 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: Entrega_final_HC.aux
+The style file: abbrv.bst
+I couldn't open database file bibliografia.bib
+---line 20 of file Entrega_final_HC.aux
+ : \bibdata{bibliografia
+ :                      }
+I'm skipping whatever remains of this command
+I found no database files---while reading file Entrega_final_HC.aux
+Warning--I didn't find a database entry for "macqueen_methods_nodate"
+(There were 2 error messages)
